@@ -25,6 +25,6 @@ for coords in chain(data):
 
     troponin_img = grab_troponin(image, x_coord, y_coord, grab_rad=150)
     imgplot = plt.imshow(troponin_img)
-    plt.show()
+    # plt.imsave('trop.png', troponin_img)
 
 # plt.show()
