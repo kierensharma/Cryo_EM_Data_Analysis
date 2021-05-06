@@ -78,7 +78,7 @@ def make_dataframe():
     for file in glob.glob("/Volumes/KierenSSD/University/Not_Troponin_Images/*.png"):
         not_trop_files.append(file)
     trop_files = []
-    for file in glob.glob("/Volumes/KierenSSD/University/Troponin_Images/*.png"):
+    for file in glob.glob("/Volumes/KierenSSD/University/Generated_troponin_dataset/*.png"):
         trop_files.append(file)
     
     for not_trop_file in tqdm(not_trop_files):
