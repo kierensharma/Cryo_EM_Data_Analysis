@@ -9,6 +9,7 @@ from itertools import chain
 from tqdm import tqdm
 
 def get_trop_imgs():
+    num = 0
     mrc_files = []
     for file in glob.glob("/Volumes/KierenSSD/University/Thinfil_micrographs_and_coords/micrographs_final/*.mrc"):
         mrc_files.append(file)
