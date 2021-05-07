@@ -1,5 +1,6 @@
 import glob
 import cv2
+import numpy as np
 import pandas as pd
 from troponin import get_mrc_image
 from troponin import find_actin_ll
@@ -66,40 +67,49 @@ def not_troponin_generator():
                     plt.imsave(not_trop_img_path, not_troponin_img)
                     num += 1
 
-def make_dataframe():
-    image_dataframe = pd.DataFrame (columns = ['Label','Image'])
-    # image = cv2.imread("/Volumes/KierenSSD/University/Troponin_Images/trop_215.png")
-    # flattened_image = image.flatten()
-    # new_data = {'Label':1, 'Image':flattened_image}
-    # image_dataframe = image_dataframe.append(new_data, ignore_index=True)
-    # print(image_dataframe)
+def make_dataset():
+    x = []
+    y = []
     
     not_trop_files = []
     for file in glob.glob("/Volumes/KierenSSD/University/Not_Troponin_Images/*.png"):
         not_trop_files.append(file)
     trop_files = []
-    for file in glob.glob("/Volumes/KierenSSD/University/Generated_troponin_dataset/*.png"):
+    for file in glob.glob("/Volumes/KierenSSD/University/Generated_troponin_dataset/*.jpeg"):
         trop_files.append(file)
     
-    for not_trop_file in tqdm(not_trop_files):
+    for not_trop_file in tqdm(not_trop_files[:1000]):
         image = cv2.imread(not_trop_file)
         flattened_image = image.flatten()
-        new_data = {'Label':0, 'Image':flattened_image}
-        image_dataframe = image_dataframe.append(new_data, ignore_index=True)
+        flattened_image = flattened_image.tolist()
+        if len(flattened_image) != 270000:
+            continue
 
-    for trop_file in tqdm(trop_files):
+        x.append(flattened_image)
+        y.append(0)
+
+    for trop_file in tqdm(trop_files[:1000]):
         image = cv2.imread(trop_file)
         flattened_image = image.flatten()
-        new_data = {'Label':1, 'Image':flattened_image}
-        image_dataframe = image_dataframe.append(new_data, ignore_index=True)
+        flattened_image = flattened_image.tolist()
+        if len(flattened_image) != 270000:
+            continue
 
-    image_dataframe = image_dataframe.sample(frac = 1)
-    image_dataframe.to_csv('image_dataframe.csv')
+        x.append(flattened_image)
+        y.append(1)
+
+    return np.array(x), np.array(y)
 
 def main():
     # troponin_generator()
     # not_troponin_generator()
-    make_dataframe()
+    x, y = make_dataset()
+    print(x)
+    print(x.shape)
+    print(type(x))
+    print(y)
+    print(y.shape)
+    print(type(y))
 
 if __name__ == '__main__':
     main()
