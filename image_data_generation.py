@@ -78,21 +78,32 @@ def make_dataset():
     for file in glob.glob("/Volumes/KierenSSD/University/Generated_troponin_dataset/*.jpeg"):
         trop_files.append(file)
     
-    for not_trop_file in tqdm(not_trop_files[:1000]):
-        image = cv2.imread(not_trop_file)
+    for not_trop_file in tqdm(not_trop_files[:10000]):
+        img = cv2.imread(not_trop_file)
+        scale_percent = 50 # percent of original size
+        width = int(img.shape[1] * scale_percent / 100)
+        height = int(img.shape[0] * scale_percent / 100)
+        dim = (width, height)
+        image = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
         flattened_image = image.flatten()
         flattened_image = flattened_image.tolist()
-        if len(flattened_image) != 270000:
+        # print(len(flattened_image))
+        if len(flattened_image) != 67500:
             continue
 
         x.append(flattened_image)
         y.append(0)
 
-    for trop_file in tqdm(trop_files[:1000]):
-        image = cv2.imread(trop_file)
+    for trop_file in tqdm(trop_files):
+        img = cv2.imread(trop_file)
+        scale_percent = 50 # percent of original size
+        width = int(img.shape[1] * scale_percent / 100)
+        height = int(img.shape[0] * scale_percent / 100)
+        dim = (width, height)
+        image = cv2.resize(img, dim, interpolation = cv2.INTER_AREA)
         flattened_image = image.flatten()
         flattened_image = flattened_image.tolist()
-        if len(flattened_image) != 270000:
+        if len(flattened_image) != 67500:
             continue
 
         x.append(flattened_image)
